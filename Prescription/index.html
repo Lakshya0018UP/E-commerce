@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription Form</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Prescription Form</h2>
+  <form id="prescriptionForm">
+    <div class="form-group">
+      <label for="patientName">Patient Name:</label>
+      <input type="text" id="patientName" name="patientName" required>
+    </div>
+    <div class="form-group">
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required>
+    </div>
+    <div class="form-group">
+      <label for="doctorName">Doctor's Name:</label>
+      <input type="text" id="doctorName" name="doctorName" required>
+    </div>
+    <div class="form-group">
+      <label for="numOfMedicines">Number of Medicines:</label>
+      <input type="number" id="numOfMedicines" name="numOfMedicines" min="1" required>
+    </div>
+    <div id="medicationFields"></div>
+    <div class="form-group">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<div id="prescriptionOutput" class="container" style="display: none;">
+  <h2>Prescription Details</h2>
+  <div id="prescriptionDetails"></div>
+</div>
+
+<script>
+document.getElementById("prescriptionForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent form submission
+
+  // Get patient name
+  const patientName = document.getElementById("patientName").value;
+
+  // Get date
+  const date = document.getElementById("date").value;
+
+  // Get doctor's name
+  const doctorName = document.getElementById("doctorName").value;
+
+  // Get number of medicines required
+  const numOfMedicines = parseInt(document.getElementById("numOfMedicines").value);
+
+  // Initialize the medication fields
+  let medicationFieldsHTML = "";
+
+  // Generate input fields for each medication
+  for (let i = 1; i <= numOfMedicines; i++) {
+    medicationFieldsHTML += `
+      <div class="form-group">
+        <label for="medication${i}">Medicine ${i}:</label>
+        <select id="medication${i}" name="medication${i}" required>
+          <option value="">Select Medication</option>
+          <option value="First Aid Kit">First Aid Kit</option>
+          <option value="Cotton Crepe Bandage">Cotton Crepe Bandage</option>
+          <option value="Antiseptic and Burns">Antiseptic and Burns</option>
+          <option value="Wounds and Trauma Care">Wounds and Trauma Care</option>
+          <option value="Diabetic Medication">Diabetic Medication</option>
+          <option value="Paracetamol">Paracetamol</option>
+          <option value="Ibuprofen">Ibuprofen</option>
+          <option value="Metrogyl">Metrogyl</option>
+          <option value="Vitamin C Tablets">Vitamin C Tablets</option>
+          <option value="Calcium Tablets">Calcium Tablets</option>
+          <option value="Antacids">Antacids</option>
+        </select>
+      </div>
+    `;
+  }
+
+  // Inject medication fields into the form
+  document.getElementById("medicationFields").innerHTML = medicationFieldsHTML;
+
+  // Display the prescription output section
+  document.getElementById("prescriptionOutput").style.display = "block";
+});
+
+// Additional JavaScript code can be added here for handling prescription data display
+</script>
+
+</body>
+</html>
