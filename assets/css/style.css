@@ -650,7 +650,7 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   #BANNER
 \*-----------------------------------*/
 
-.banner { margin: 30px 0; }
+/* .banner { margin: 30px 0; }
 
 .slider-container {
   display: flex;
@@ -720,7 +720,22 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   transition: var(--transition-timing);
 }
 
-.banner-btn:hover { background: var(--eerie-black); }
+.banner-btn:hover { background: var(--eerie-black); } */
+
+.head{
+  width:100%;
+  height:100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  
+}
+
+.welcome{
+  text-align: center;
+  margin-right:25px;
+}
 
 
 
@@ -2343,22 +2358,35 @@ footer {
    * #BANNER 
    */
 
-  .banner { margin-top: 0; }
-
-  .slider-item { height: 380px; }
-
-  .banner-content {
-    left: 75px;
-    max-width: 400px;
+   .head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width:100%;
+    color:white;
+    padding-left:100px;
+  }
+  .welcome{
+    padding-left:120px
   }
 
-  .banner-subtitle { --fs-7: 1.625rem; }
+  .application-button {
+    display: inline-block;
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
 
-  .banner-text { --fs-7: 1.375rem; }
-
-  .banner-btn { --fs-11: 0.875rem; }
-
-
+/* Hover effect for the button */
+.application-button:hover {
+    background-color: #2980b9;
+}
 
   /**
    * #CATEGORY 
@@ -2629,3 +2657,4 @@ footer {
   }
 
 }
+
