@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prescription Form</title>
   <link rel="stylesheet" href="index1.css">
+
 </head>
 <body>
 
@@ -29,66 +30,134 @@
     </div>
     <div id="medicationFields"></div>
     <div class="form-group">
-      <button type="submit">Submit</button>
+      <button type="submit" id="submitBtn">Submit</button>
     </div>
   </form>
 </div>
 
 <div id="prescriptionOutput" class="container" style="display: none;">
   <h2>Prescription Details</h2>
-  <div id="prescriptionDetails"></div>
+  <table id="prescriptionTable">
+    <tr>
+      <th>Patient Name</th>
+      <td id="patientNameOutput"></td>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <td id="dateOutput"></td>
+    </tr>
+    <tr>
+      <th>Doctor's Name</th>
+      <td id="doctorNameOutput"></td>
+    </tr>
+    <tr>
+      <th>Medications</th>
+      <td>
+        <table id="medicationsTable">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+            </tr>
+          </thead>
+          <tbody id="medicationsOutput"></tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <button id="sendEmailBtn">Send via mail</button>
 </div>
 
 <script>
-document.getElementById("prescriptionForm").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevent form submission
+  // Function to generate medication input fields
+  function generateMedicationFields(numOfMedicines) {
+    let medicationFieldsHTML = "";
 
-  // Get patient name
-  const patientName = document.getElementById("patientName").value;
+    // Generate input fields for each medication
+    for (let i = 1; i <= numOfMedicines; i++) {
+      medicationFieldsHTML += `
+        <div class="form-group">
+          <label for="medication${i}">Medicine ${i}:</label>
+          <select id="medication${i}" name="medication${i}" required>
+            <option value="">Select Medication</option>
+            <option value="First Aid Kit">First Aid Kit</option>
+            <option value="Cotton Crepe Bandage">Cotton Crepe Bandage</option>
+            <option value="Antiseptic and Burns">Antiseptic and Burns</option>
+            <option value="Wounds and Trauma Care">Wounds and Trauma Care</option>
+            <option value="Diabetic Medication">Diabetic Medication</option>
+            <option value="Paracetamol">Paracetamol</option>
+            <option value="Ibuprofen">Ibuprofen</option>
+            <option value="Metrogyl">Metrogyl</option>
+            <option value="Vitamin C Tablets">Vitamin C Tablets</option>
+            <option value="Calcium Tablets">Calcium Tablets</option>
+            <option value="Antacids">Antacids</option>
+          </select>
+        </div>
+      `;
+    }
 
-  // Get date
-  const date = document.getElementById("date").value;
-
-  // Get doctor's name
-  const doctorName = document.getElementById("doctorName").value;
-
-  // Get number of medicines required
-  const numOfMedicines = parseInt(document.getElementById("numOfMedicines").value);
-
-  // Initialize the medication fields
-  let medicationFieldsHTML = "";
-
-  // Generate input fields for each medication
-  for (let i = 1; i <= numOfMedicines; i++) {
-    medicationFieldsHTML += `
-      <div class="form-group">
-        <label for="medication${i}">Medicine ${i}:</label>
-        <select id="medication${i}" name="medication${i}" required>
-          <option value="">Select Medication</option>
-          <option value="First Aid Kit">First Aid Kit</option>
-          <option value="Cotton Crepe Bandage">Cotton Crepe Bandage</option>
-          <option value="Antiseptic and Burns">Antiseptic and Burns</option>
-          <option value="Wounds and Trauma Care">Wounds and Trauma Care</option>
-          <option value="Diabetic Medication">Diabetic Medication</option>
-          <option value="Paracetamol">Paracetamol</option>
-          <option value="Ibuprofen">Ibuprofen</option>
-          <option value="Metrogyl">Metrogyl</option>
-          <option value="Vitamin C Tablets">Vitamin C Tablets</option>
-          <option value="Calcium Tablets">Calcium Tablets</option>
-          <option value="Antacids">Antacids</option>
-        </select>
-      </div>
-    `;
+    // Inject medication fields into the form
+    document.getElementById("medicationFields").innerHTML = medicationFieldsHTML;
   }
 
-  // Inject medication fields into the form
-  document.getElementById("medicationFields").innerHTML = medicationFieldsHTML;
+  // Event listener for changes in the number of medicines input
+  document.getElementById("numOfMedicines").addEventListener("input", function(event) {
+    const numOfMedicines = parseInt(event.target.value);
+    generateMedicationFields(numOfMedicines);
+  });
 
-  // Display the prescription output section
-  document.getElementById("prescriptionOutput").style.display = "block";
-});
+  document.getElementById("prescriptionForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form submission
 
-// Additional JavaScript code can be added here for handling prescription data display
+    // Get patient name
+    const patientName = document.getElementById("patientName").value;
+
+    // Get date
+    const date = document.getElementById("date").value;
+
+    // Get doctor's name
+    const doctorName = document.getElementById("doctorName").value;
+
+    // Get number of medicines required
+    const numOfMedicines = parseInt(document.getElementById("numOfMedicines").value);
+
+    // Create an array to store medications
+    const medications = [];
+
+    // Loop through each medication to retrieve its value
+    for (let i = 1; i <= numOfMedicines; i++) {
+      const medication = document.getElementById(`medication${i}`).value;
+      medications.push(medication);
+    }
+
+    // Display the prescription details
+    document.getElementById("patientNameOutput").textContent = patientName;
+    document.getElementById("dateOutput").textContent = date;
+    document.getElementById("doctorNameOutput").textContent = doctorName;
+
+    // Display medications in tabular form
+    const medicationsTableBody = document.getElementById("medicationsOutput");
+    medicationsTableBody.innerHTML = ""; // Clear previous content
+
+    medications.forEach(function(medication) {
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.textContent = medication;
+      row.appendChild(cell);
+      medicationsTableBody.appendChild(row);
+    });
+
+    // Hide the prescription form
+    document.getElementById("prescriptionForm").style.display = "none";
+
+    // Display the prescription details
+    document.getElementById("prescriptionOutput").style.display = "block";
+  });
+
+  // Event listener for sending email
+  document.getElementById("sendEmailBtn").addEventListener("click", function() {
+    // Implement sending email functionality here
+    alert("Email functionality not implemented yet.");
+  });
 </script>
 
 </body>
