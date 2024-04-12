@@ -86,3 +86,11 @@ for (let i = 0; i < accordionBtn.length; i++) {
   });
 
 }
+
+function redirectToPrediction() {
+  // Your logic to determine the destination URL
+  let destination = 'https://ss-disease-prediction.streamlit.app/';
+
+  // Redirect to the destination URL
+  window.location.href = destination;
+}
